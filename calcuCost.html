@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title> Υπολογισμός Κόστους Ενοικίασης </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Nunito&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <style>
+        .calcuCost_scene {
+            width: 600px;
+            margin: 100px auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 1px 1px 20px rgba(0,0,0,0.4);
+            font-family: var(--gr-font);
+        }
+        @media screen and (max-width: 780px){
+            .calcuCost_scene{
+                width: 100%;
+            }
+        }
+        .calcuCost_scene .title {
+            font-size: 25px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 100px;
+            color: #fff;                /* Για την σωστη λειτουργία και στα υπόλοιπα browsers*/
+            -webkit-user-select: none;  /* Safari */
+            -moz-user-select: none;     /* Firefox */
+            -ms-user-select: none;      /* IE10+ */
+            user-select: none;
+            border-radius: 15px 15px 0 0;
+            background: var(--text-clr);
+        }
+        .calcuCost_form {
+            display: block;
+            padding: 10px 30px 50px 30px;
+        }
+
+        .calcuCost_fld {
+            height: 50px;
+            width: 100%;
+            margin-top: 20px;
+            position: relative;
+            z-index: 0;
+        }
+            .calcuCost_fld input::-webkit-outer-spin-button,
+            .calcuCost_fld input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            .calcuCost_fld input {
+                height: 100%;
+                width: 50%;
+                outline: none;
+                font-size: 17px;
+                padding: 0 20px;
+                border: 1px solid var(--text-clr);
+                border-radius: 25px;
+                transition: all 0.3s ease;
+            }
+
+        .calcuCost_fld label {
+            position: absolute;
+            top: 0%;
+            left: 20px;
+            background: #fff;
+            color: var(--text-clr);
+            font-weight: 400;
+            font-size: 16px;
+            pointer-events: none;
+            transform: translateY(-50%);
+        }
+
+        .calcu_result {
+            margin-top: 15px;
+            color: var(--text-clr);
+            font-size: 25px;
+        }
+            .calcu_result:before {
+                content: "Τελικό Ποσό Χρέωσης:";
+                color: black;
+                font-size: 16px;
+                padding-right: 10px;
+            }
+
+        .calcu_btn{
+            margin-top: 15px;
+            border: none;
+            color: white;
+            background-color: var(--text-clr);
+            width: 150px;
+            padding: 10px;
+            border-radius: 10px;
+            outline: none;
+            cursor: pointer;
+        }
+
+            .calcu_btn:hover {
+                background-color: #007A62;
+            }
+
+        .calcu_info {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+    </style>
+    <script src="sources/script.js" defer></script>
+    <script>
+        function calculateCost() {
+            const age = document.getElementById("calcu_age").value,
+                cc = document.getElementById("calcu_cc").value,
+                days = document.getElementById("calcu_days").value,
+                resultElement = document.getElementById("calcu_result"),
+                infoElement = document.getElementById("calcu_info");
+            resultElement.innerHTML = "--";
+            infoElement.innerHTML = "Γράψε την ηλικία σου τα κυβικά του αυτοκινήτου και τις ημέρες που επιθυμείς να ενοικιάσεις.";
+            if (!validValues(age, cc, days)) {
+                infoElement.innerHTML = "Error: Έλεγξε τα δεδομένα που έχεις βάλει";
+                return;
+            }
+            switch (age) {
+                case age < 22:
+                    costOfInsurance = 0.00042;
+                    break;
+                case age > 30:
+                    costOfInsurance = 0.00023;
+                    break;
+                default:
+                    costOfInsurance = 0.00036;
+            }
+            costInsu = age * costOfInsurance * cc;
+
+            switch (days) {
+                case days < 5:
+                    if (cc < 1601) {
+                        costRental = 15.42;
+                    } else if (cc > 2000) {
+                        costRental = 18.22;
+                    } else {
+                        costRental = 16.82;
+                    }
+                    break;
+                case days > 10:
+                    if (cc < 1601) {
+                        costRental = 13.15;
+                    } else if (cc > 2000) {
+                        costRental = 16.20;
+                    } else {
+                        costRental = 14.80;
+                    }
+                    break;
+                default:
+                    if (cc < 1601) {
+                        costRental = 14.62;
+                    } else if (cc > 2000) {
+                        costRental = 17.10;
+                    } else {
+                        costRental = 15.76;
+                    }
+            }
+            totalRental = days * costRental;
+
+            result = costInsu + totalRental;
+            result = (Math.round(result * 100) / 100).toFixed(2);
+            resultElement.innerHTML = result + "\u20AC";
+        }
+
+        function validValues(ageValue, ccValue, daysValue) {
+            if (!(isNaN(ageValue) && isNaN(ccValue) && isNaN(daysValue))) {
+                if (ageValue >= 18 && ccValue >= 0 && daysValue >= 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <div id="header">
+        <nav>
+            <input type="checkbox" id="check" class="nav_checkbox"/>
+            <label for="check" class="checknav" onclick="changeBar(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </label>
+            <label class="logo_container">
+                My <span>Rentacar</span> Store
+            </label>
+            <ul class="navigation">
+                <li><a href="index.html">Αρχικη Σελιδα</a></li>
+                <li><a href="profile.html">Προφιλ</a></li>
+                <li><a href="fleet.html">Στολος</a></li>
+                <li><a class="active" href="calcuCost.html">Υπολογισμος Κοστους</a></li>
+                <li><a href="contact.html">Επικοινωνια</a></li>
+                <li><a href="admin.html">Σελιδα Διαχειρισης</a></li>
+            </ul>
+
+        </nav>
+    </div>
+    <div class="content">
+        <div class="calcuCost_scene">
+            <div class="title">Υπολογισμός Κόστους Ενοικίασης Αυτοκινήτου</div>
+            <div class="calcuCost_form">
+                <div class="calcuCost_fld">
+                    <input type="text" id="calcu_age">
+                    <label>Ηλικία</label>
+                </div>
+                <div class="calcuCost_fld">
+                    <input type="text" id="calcu_cc">
+                    <label>Κυβικά αυτοκινήτου</label>
+                </div>
+                <div class="calcuCost_fld">
+                    <input type="text" id="calcu_days">
+                    <label>Πλήθως Ημερών</label>
+                </div>
+                <p class="calcu_result" id="calcu_result">--</p>
+                <button class="calcu_btn" id="btn" onClick="calculateCost()">Υπολογισμός</button>
+                <p class="calcu_info" id="calcu_info">Γράψε την ηλικία σου τα κυβικά του αυτοκινήτου και τις ημέρες που επιθυμείς να ενοικιάσεις.</p>
+            </div>
+        </div>
+    </div>
+    <div id="footer" class="footer">
+        <div class="inner_footer">
+            <div class="left box">
+                <h2>Φορμα Εγγραφης στο Newsletter</h2>
+                <div class="ftr_content">
+                    <form id="newsletter">
+                        <div class="nlr_fld">
+                            <div class="ftr_text">Username</div>
+                            <input maxlength="20" type="text" name="username" required>
+                        </div>
+                        <div class="nlr_fld">
+                            <div class="ftr_text">Όνομα</div>
+                            <input maxlength="20" type="text" name="name" required>
+                        </div>
+                        <div class="nlr_fld">
+                            <div class="ftr_text">E-Mail</div>
+                            <input maxlength="50" type="email" name="email" required>
+                        </div>
+                        <div class="nlr_btn">
+                            <button type="submit">Εγγραφή</button>
+                            <span id="statusNewsletter"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="center box">
+                <h2>Στοιχεια Επικοινωνιας</h2>
+                <div class="ftr_content">
+                    <div class="ftr_contact">
+                        <h3>Διεύθυνση</h3>
+                        <span class="ftr_text">Καραολή και Δημητρίου 80, Πειραιάς 185 34</span>
+                    </div>
+                    <div class="ftr_contact">
+                        <h3>Τηλέφωνο</h3>
+                        <a href="tel:2104142000">+30210-4142000</a>
+                    </div>
+                    <div class="ftr_contact">
+                        <h3>E-Mail</h3>
+                        <a href="mailto:aggelos_sachtouris@hotmail.com">aggelos_sachtouris@hotmail.com</a>
+                    </div>
+                </div>
+            </div>
+            <div class="right box">
+                <h2>Χαρτης</h2>
+                <div class="ftr_content">
+                    <iframe class="googleMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3146.525339924713!2d23.650679415490245!3d37.94151791032132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1bbe5bb8515a1%3A0x3e0dce8e58812705!2zzqDOsc69zrXPgM65z4PPhM6uzrzOuc6_IM6gzrXOuc-BzrHOuc-Oz4I!5e0!3m2!1sel!2sgr!4v1655292751448!5m2!1sel!2sgr"
+                            width="200" height="300" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="bottom_footer">
+            <p>Copyright © My Rentacar Store, Aggelos Sachtouris - E19247. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
+

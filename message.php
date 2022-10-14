@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title> Επικοινωνία </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Nunito&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="sources/script.js" defer></script>
+</head>
+<body>
+<?php
+define('DB_SERVER', 'localhost');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
+define('DB_DATABASE', 'rentacardb');
+
+function getDB(){
+    $dbhost = DB_SERVER;
+    $dbuser = DB_USERNAME;
+    $dbpass = DB_PASSWORD;
+    $dbname = DB_DATABASE;
+    $dbconnection = new PDO("mysql:host=$dbhost;dbname=$dbname;charset=utf8", $dbuser, $dbpass);
+    $dbconnection->exec("set names 'utf8';");
+    $dbconnection->exec("SET CHARACTER SET 'utf8';");
+    $dbconnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $dbconnection;
+}
+
+$fname =  $_POST['name'];
+$femail = $_POST['email'];
+$fphone = $_POST['phone'];
+$ftheme = $_POST['theme'];
+$fmessage = $_POST['message'];
+
+$sql = "INSERT INTO messages (name, phone_number, email, subject, message) VALUES (:fname, :fphone, :femail, :ftheme, :fmessage)";
+
+?>
+    <div id="header">
+        <nav>
+            <input type="checkbox" id="check" class="nav_checkbox"/>
+            <label for="check" class="checknav" onclick="changeBar(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </label>
+            <label class="logo_container">
+                My <span>Rentacar</span> Store
+            </label>
+            <ul class="navigation">
+                <li><a href="index.html">Αρχικη Σελιδα</a></li>
+                <li><a href="profile.html">Προφιλ</a></li>
+                <li><a href="fleet.html">Στολος</a></li>
+                <li><a href="calcuCost.html">Υπολογισμος Κοστους</a></li>
+                <li><a class="active" href="contact.html">Επικοινωνια</a></li>
+                <li><a href="admin.html">Σελιδα Διαχειρισης</a></li>
+            </ul>
+
+        </nav>
+    </div>
+    <div class="content">
+        <div class="contact">
+            <div class="contact_box">
+                <div class="contact_left"></div>
+                <div class="contact_form">
+                    <header>Επικοινώνησε μαζί μας</header>
+                    <form action="message.php" method="post">
+                        <div class="contact_fields">
+                            <input maxlength="20" type="text" name="name" placeholder="Γραψε το Όνομά σου" class="field" required>
+                            <input maxlength="50" type="email" name="email" placeholder="Γράψε το E-Mail σου" class="field" required>
+                        </div>
+                        <div class="contact_fields">
+                            <input maxlength="15" type="tel" name="phone" placeholder="Γράψε το τηλέφωνό σου" class="field" required>
+                            <input maxlength="50" type="text" name="theme" placeholder="Θέμα" class="field" required>
+                        </div>
+                        <div class="message">
+                            <textarea placeholder="Μήνυμα" name="message" required></textarea>
+                        </div>
+                        <div class="contact_button">
+                            <button class="contact_button" type="submit">Υποβολή</button>
+                            <?php
+                            try{
+                                $dbCon = getDB();
+                                $stmt = $dbCon->prepare($sql);
+                                $stmt->bindParam("fname", $fname);
+                                $stmt->bindParam("fphone", $fphone);
+                                $stmt->bindParam("femail", $femail);
+                                $stmt->bindParam("ftheme", $ftheme);
+                                $stmt->bindParam("fmessage", $fmessage);
+                                $stmt->execute();
+                                $dbCon = null;
+                                echo '<span id="statusContactId" style="padding-left: 10px;">Το μήνυμα εστάλη επιτυχώς.</span>';
+                            } catch(PDOException $e) {
+                                echo '<span id="statusContactId" style="padding-left: 10px;">{"error":{"text":'. $e->getMessage() .'}}</span>';
+                            }
+                            ?>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="contact_info_scene">
+            <div class="contact_info">
+                <div class="contact_info_box">
+                    <div class="contact_info_text">
+                        <h3>Διεύθυνση</h3>
+                        <p>Καραολή και Δημητρίου 80, Πειραιάς 185 34</p>
+                    </div>
+                </div>
+                <div class="contact_info_box">
+                    <div class="contact_info_text">
+                        <h3>Τηλέφωνο</h3>
+                        <a href="tel:2104142000"><p>+30210 4142000</p></a>
+                    </div>
+                </div>
+                <div class="contact_info_box">
+                    <div class="contact_info_text">
+                        <h3>E-Mail</h3>
+                        <a href="mailto:aggelos_sachtouris@hotmail.com"><p>aggelos_sachtouris@hotmail.com</p></a>
+                    </div>
+                </div>
+            </div>
+            <div class="contact_map">
+                <iframe class="googleMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3146.525339924713!2d23.650679415490245!3d37.94151791032132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1bbe5bb8515a1%3A0x3e0dce8e58812705!2zzqDOsc69zrXPgM65z4PPhM6uzrzOuc6_IM6gzrXOuc-BzrHOuc-Oz4I!5e0!3m2!1sel!2sgr!4v1655292751448!5m2!1sel!2sgr"
+                        width="600" height="450" style="border: 2px solid #009879;border-radius:5px;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+    <div id="footer" class="footer">
+        <div class="inner_footer">
+            <div class="left box">
+                <h2>Φορμα Εγγραφης στο Newsletter</h2>
+                <div class="ftr_content">
+                    <form id="newsletter">
+                        <div class="nlr_fld">
+                            <div class="ftr_text">Username</div>
+                            <input maxlength="20" type="text" name="username" required>
+                        </div>
+                        <div class="nlr_fld">
+                            <div class="ftr_text">Όνομα</div>
+                            <input maxlength="20" type="text" name="name" required>
+                        </div>
+                        <div class="nlr_fld">
+                            <div class="ftr_text">E-Mail</div>
+                            <input maxlength="50" type="email" name="email" required>
+                        </div>
+                        <div class="nlr_btn">
+                            <button type="submit">Εγγραφή</button>
+                            <span id="statusNewsletter"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="center box">
+                <h2>Στοιχεια Επικοινωνιας</h2>
+                <div class="ftr_content">
+                    <div class="ftr_contact">
+                        <h3>Διεύθυνση</h3>
+                        <span class="ftr_text">Καραολή και Δημητρίου 80, Πειραιάς 185 34</span>
+                    </div>
+                    <div class="ftr_contact">
+                        <h3>Τηλέφωνο</h3>
+                        <a href="tel:2104142000">+30210-4142000</a>
+                    </div>
+                    <div class="ftr_contact">
+                        <h3>E-Mail</h3>
+                        <a href="mailto:aggelos_sachtouris@hotmail.com">aggelos_sachtouris@hotmail.com</a>
+                    </div>
+                </div>
+            </div>
+            <div class="right box">
+                <h2>Χαρτης</h2>
+                <div class="ftr_content">
+                    <iframe class="googleMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3146.525339924713!2d23.650679415490245!3d37.94151791032132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1bbe5bb8515a1%3A0x3e0dce8e58812705!2zzqDOsc69zrXPgM65z4PPhM6uzrzOuc6_IM6gzrXOuc-BzrHOuc-Oz4I!5e0!3m2!1sel!2sgr!4v1655292751448!5m2!1sel!2sgr"
+                            width="200" height="300" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="bottom_footer">
+            <p>Copyright © My Rentacar Store, Aggelos Sachtouris - E19247. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
+

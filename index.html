@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title> Αρχική Σελίδα </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Nunito&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <style>
+        .who {
+            margin: 40px auto 40px auto;
+            font-family: 'Nunito';
+            width: 100%;
+        }
+
+            .who h1 {
+                margin-bottom: 10px;
+                text-align: center;
+                font-family: 'Inter', sans-serif;
+                font-size: 32px;
+            }
+
+        .who_inner {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            flex-direction: row;
+            gap: 20px;
+            color: white;
+        }
+
+        .who_grid {
+            background-color: #101010;
+            max-width: 25%;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+            .who_grid p {
+                font-family: 'Inter', sans-serif;
+                font-size: medium;
+            }
+        .video {
+            height: auto;
+            width: 100%;
+        }
+
+        @media (max-width: 1352px) {
+            .who_grid video {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 780px) {
+            .who_inner {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .who_grid {
+                max-width: 50%;
+            }
+        }
+    </style>
+    <script src="sources/script.js" defer></script>
+</head>
+<body>
+    <div class="navigation" id="header">
+        <nav>
+            <input type="checkbox" id="check" class="nav_checkbox"/>
+            <label for="check" class="checknav" onclick="changeBar(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </label>
+            <label class="logo_container">
+                My <span>Rentacar</span> Store
+            </label>
+            <ul class="navigation">
+                <li><a class="active" href="index.html">Αρχικη Σελιδα</a></li>
+                <li><a href="profile.html">Προφιλ</a></li>
+                <li><a href="fleet.html">Στολος</a></li>
+                <li><a href="calcuCost.html">Υπολογισμος Κοστους</a></li>
+                <li><a href="contact.html">Επικοινωνια</a></li>
+                <li><a href="admin.html">Σελιδα Διαχειρισης</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <div id="who" class="who">
+            <h1>Ποιοι Είμαστε;</h1>
+            <div class="who_inner">
+                <div id="who_grid" class="who_grid">
+                    <video width="320" height="240" controls>
+                        <source src="video/demo.mp4" />
+                        Video Doesnt Exist
+                    </video>
+
+                </div>
+                <div id="who_grid" class="who_grid">
+                    <p>Είμαστε 2-grid Column με Responsive Video και Κείμενο. Μείωσε το πλάτος του προγράμματος περιήγησης στα 780px για να δεις τη μαγεία του Responsive να αλλάζει τη διάταξη των δύο αυτών div σε κατακόρυφη.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="services" class="services">
+            <h1>Υπηρεσίες</h1>
+            <div class="services_inner">
+                <div id="services_grid1" class="services_grid">
+                    <h3>Ενοικίαση Van</h3>
+                    <div class="services_image">
+                        <img src="img/van.png" />
+                    </div>
+                </div>
+                <div id="services_grid2" class="services_grid">
+                    <h3>Ενοικίαση Αυτοκινήτων</h3>
+                    <div class="services_image">
+                        <img src="img/car.jpg" />
+                    </div>
+                </div>
+                <div id="services_grid3" class="services_grid">
+                    <h3>Ενοικίαση Δίκυκλων</h3>
+                    <div class="services_image">
+                        <img src="img/motorcycle.jpg" />
+                    </div>
+                </div>
+                <div id="services_grid4" class="services_grid">
+                    <h3>Παροχή VIP Μετακινήσεων</h3>
+                    <div class="services_image">
+                        <img src="img/limousine.jpg" />
+                    </div>
+                </div>
+
+            </div>
+            <a class="services_button" target="_blank" href="profile.html">Προφίλ Εταιρείας</a>
+        </div>
+    </div>
+    <div id="footer" class="footer">
+        <div class="inner_footer">
+            <div class="left box">
+                <h2>Φορμα Εγγραφης στο Newsletter</h2>
+                <div class="ftr_content">
+                    <form id="newsletter">
+                        <div class="nlr_fld">
+                            <div class="ftr_text">Username</div>
+                            <input maxlength="20" type="text" name="username" required>
+                        </div>
+                        <div class="nlr_fld">
+                            <div class="ftr_text">Όνομα</div>
+                            <input maxlength="20" type="text" name="name" required>
+                        </div>
+                        <div class="nlr_fld">
+                            <div class="ftr_text">E-Mail</div>
+                            <input maxlength="50" type="email" name="email" required>
+                        </div>
+                        <div class="nlr_btn">
+                            <button type="submit">Εγγραφή</button>
+                            <span id="statusNewsletter"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="center box">
+                <h2>Στοιχεια Επικοινωνιας</h2>
+                <div class="ftr_content">
+                    <div class="ftr_contact">
+                        <h3>Διεύθυνση</h3>
+                        <span class="ftr_text">Καραολή και Δημητρίου 80, Πειραιάς 185 34</span>
+                    </div>
+                    <div class="ftr_contact">
+                        <h3>Τηλέφωνο</h3>
+                        <a href="tel:2104142000">+30210-4142000</a>
+                    </div>
+                    <div class="ftr_contact">
+                        <h3>E-Mail</h3>
+                        <a href="mailto:aggelos_sachtouris@hotmail.com">aggelos_sachtouris@hotmail.com</a>
+                    </div>
+                </div>
+            </div>
+            <div class="right box">
+                <h2>Χαρτης</h2>
+                <div class="ftr_content">
+                    <iframe class="googleMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3146.525339924713!2d23.650679415490245!3d37.94151791032132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1bbe5bb8515a1%3A0x3e0dce8e58812705!2zzqDOsc69zrXPgM65z4PPhM6uzrzOuc6_IM6gzrXOuc-BzrHOuc-Oz4I!5e0!3m2!1sel!2sgr!4v1655292751448!5m2!1sel!2sgr"
+                            width="200" height="300" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="bottom_footer">
+            <p>Copyright © My Rentacar Store, Aggelos Sachtouris - E19247. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
+
